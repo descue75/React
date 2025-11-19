@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import type { PlayerProps } from '../models/Player';
 
-function Player({ initialName, symbol, isActive }: PlayerProps) {
+function Player({ initialName, symbol, isActive, onChangeName}: PlayerProps) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -11,6 +11,7 @@ function Player({ initialName, symbol, isActive }: PlayerProps) {
     if (isEditing) {
       const newName = inputRef.current?.value.trim() || playerName;
       setPlayerName(newName);
+      onChangeName({symbol, newName});
     }
 
     setIsEditing((editing) => !editing);

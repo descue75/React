@@ -3,7 +3,7 @@ import GameBoard from './components/GameBoard';
 import Player from './components/Player';
 import Log from './components/Log';
 import type { GameTurn } from './models/GameTurn';
-import type { PlayerSymbol } from './models/Player';
+import type { PlayerChange, PlayerName, PlayerSymbol } from './models/Player';
 import type { BoardValues } from './models/GameBoard';
 import { WINNING_COMBINATIONS } from './winning-combinations';
 import GameOver from './components/GameOver';
@@ -25,6 +25,10 @@ function deriveActivePlayer(gameTurns: GameTurn[]) {
 }
 
 function App() {
+  const [players, setPlayers] = useState<PlayerName>({
+    X: 'Player 1',
+    O: 'Player 2',
+  });
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([]);
   const currentPlayer = deriveActivePlayer(gameTurns);
 
@@ -53,7 +57,7 @@ function App() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = players[firstSquareSymbol];
     }
   }
 
@@ -76,6 +80,15 @@ function App() {
     setGameTurns([]);
   }
 
+  function playerChangeHandler({ symbol, newName }: PlayerChange) {
+    setPlayers((prevPlayers) => {
+      return {
+        ...prevPlayers,
+        [symbol]: newName,
+      };
+    });
+  }
+
   return (
     <>
       <header>
@@ -89,14 +102,18 @@ function App() {
               initialName='Player 1'
               symbol='X'
               isActive={currentPlayer === 'X'}
+              onChangeName={playerChangeHandler}
             />
             <Player
               initialName='Player 2'
               symbol='O'
               isActive={currentPlayer === 'O'}
+              onChangeName={playerChangeHandler}
             />
           </ol>
-          {(winner || hasDraw) && <GameOver winner={winner} onClick={restartHandler} />}
+          {(winner || hasDraw) && (
+            <GameOver winner={winner} onClick={restartHandler} />
+          )}
           <GameBoard onSelectSquare={selectSquareHandler} board={gameBoard} />
         </div>
         <Log entries={gameTurns} />

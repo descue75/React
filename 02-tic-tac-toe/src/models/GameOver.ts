@@ -1,4 +1,4 @@
 export interface GameOverProps {
-  winner: 'X' | 'O' | null;
+  winner: string | null;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
