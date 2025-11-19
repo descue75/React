@@ -5,6 +5,8 @@ import Log from './components/Log';
 import type { GameTurn } from './models/GameTurn';
 import type { PlayerSymbol } from './models/Player';
 import type { BoardValues } from './models/GameBoard';
+import { WINNING_COMBINATIONS } from './winning-combinations';
+import GameOver from './components/GameOver';
 
 const initialGameBoard: BoardValues[][] = [
   [null, null, null],
@@ -35,6 +37,28 @@ function App() {
     gameBoard[row][col] = player;
   }
 
+  let winner = null;
+
+  // derive winner
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSquareSymbol =
+      gameBoard[combination[0].row][combination[0].column];
+    const secondSquareSymbol =
+      gameBoard[combination[1].row][combination[1].column];
+    const thirdSquareSymbol =
+      gameBoard[combination[2].row][combination[2].column];
+
+    if (
+      firstSquareSymbol &&
+      firstSquareSymbol === secondSquareSymbol &&
+      firstSquareSymbol === thirdSquareSymbol
+    ) {
+      winner = firstSquareSymbol;
+    }
+  }
+
+  const hasDraw = gameTurns.length === 9 && !winner;
+
   function selectSquareHandler(rowIndex: number, colIndex: number) {
     setGameTurns((prevTurns) => {
       const currentPlayer = deriveActivePlayer(prevTurns);
@@ -46,6 +70,10 @@ function App() {
 
       return updatedTurns;
     });
+  }
+
+  function restartHandler() {
+    setGameTurns([]);
   }
 
   return (
@@ -64,10 +92,11 @@ function App() {
             />
             <Player
               initialName='Player 2'
-              symbol='Y'
+              symbol='O'
               isActive={currentPlayer === 'O'}
             />
           </ol>
+          {(winner || hasDraw) && <GameOver winner={winner} onClick={restartHandler} />}
           <GameBoard onSelectSquare={selectSquareHandler} board={gameBoard} />
         </div>
         <Log entries={gameTurns} />
