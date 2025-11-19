@@ -1,6 +1,6 @@
 export type PlayerSymbol = 'X' | 'O';
 
-export type PlayerName = {
+export type PlayerNames = {
   X: string;
   O: string;
 };
