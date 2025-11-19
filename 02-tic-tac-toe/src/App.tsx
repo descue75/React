@@ -5,22 +5,24 @@ import Log from './components/Log';
 import type { GameTurn } from './models/GameTurn';
 import type { PlayerSymbol } from './models/Player';
 
-function App() {
-  const [gameTurns, setGameTurns] = useState<GameTurn[]>([]);
-
+function deriveActivePlayer(gameTurns: GameTurn[]) {
   let currentPlayer: PlayerSymbol = 'X';
 
   if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
     currentPlayer = 'O';
   }
 
+  return currentPlayer;
+}
+
+function App() {
+  const [gameTurns, setGameTurns] = useState<GameTurn[]>([]);
+
+  const currentPlayer = deriveActivePlayer(gameTurns);
+
   function selectSquareHandler(rowIndex: number, colIndex: number) {
     setGameTurns((prevTurns) => {
-      let currentPlayer: PlayerSymbol = 'X';
-
-      if (prevTurns.length > 0 && prevTurns[0].player === 'X') {
-        currentPlayer = 'O';
-      }
+      const currentPlayer = deriveActivePlayer(prevTurns);
 
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
