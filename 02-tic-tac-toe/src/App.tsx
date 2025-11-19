@@ -4,6 +4,13 @@ import Player from './components/Player';
 import Log from './components/Log';
 import type { GameTurn } from './models/GameTurn';
 import type { PlayerSymbol } from './models/Player';
+import type { BoardValues } from './models/GameBoard';
+
+const initialGameBoard: BoardValues[][] = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
 
 function deriveActivePlayer(gameTurns: GameTurn[]) {
   let currentPlayer: PlayerSymbol = 'X';
@@ -17,8 +24,16 @@ function deriveActivePlayer(gameTurns: GameTurn[]) {
 
 function App() {
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([]);
-
   const currentPlayer = deriveActivePlayer(gameTurns);
+
+  const gameBoard = initialGameBoard.map((row) => [...row]);
+
+  for (const turn of gameTurns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+
+    gameBoard[row][col] = player;
+  }
 
   function selectSquareHandler(rowIndex: number, colIndex: number) {
     setGameTurns((prevTurns) => {
@@ -53,7 +68,7 @@ function App() {
               isActive={currentPlayer === 'O'}
             />
           </ol>
-          <GameBoard onSelectSquare={selectSquareHandler} turns={gameTurns} />
+          <GameBoard onSelectSquare={selectSquareHandler} board={gameBoard} />
         </div>
         <Log entries={gameTurns} />
       </main>
