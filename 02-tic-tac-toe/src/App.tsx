@@ -7,13 +7,14 @@ import type { PlayerSymbol } from './models/Player';
 
 function App() {
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([]);
-  const [activePlayer, setActivePlayer] = useState<PlayerSymbol>('X');
+
+  let currentPlayer: PlayerSymbol = 'X';
+
+  if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
+    currentPlayer = 'O';
+  }
 
   function selectSquareHandler(rowIndex: number, colIndex: number) {
-    console.log('Square selected:', rowIndex, colIndex);
-
-    setActivePlayer((prev) => (prev === 'X' ? 'O' : 'X'));
-
     setGameTurns((prevTurns) => {
       let currentPlayer: PlayerSymbol = 'X';
 
@@ -42,12 +43,12 @@ function App() {
             <Player
               initialName='Player 1'
               symbol='X'
-              isActive={activePlayer === 'X'}
+              isActive={currentPlayer === 'X'}
             />
             <Player
               initialName='Player 2'
               symbol='Y'
-              isActive={activePlayer === 'O'}
+              isActive={currentPlayer === 'O'}
             />
           </ol>
           <GameBoard onSelectSquare={selectSquareHandler} turns={gameTurns} />
