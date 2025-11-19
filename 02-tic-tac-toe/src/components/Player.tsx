@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import type { PlayerProps } from '../models/Player';
 
-function Player({ initialName, symbol }: PlayerProps) {
+function Player({ initialName, symbol, isActive }: PlayerProps) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -31,7 +31,7 @@ function Player({ initialName, symbol }: PlayerProps) {
   }
 
   return (
-    <li>
+    <li className={isActive ? 'active' : undefined}>
       <span className='player'>
         {playerNameField}
         <span className='player-symbol'>{symbol}</span>
