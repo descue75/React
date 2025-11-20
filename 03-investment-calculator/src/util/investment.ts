@@ -6,12 +6,14 @@
 // - duration: The investment duration (time frame)
 import type { InvestmentParams, YearlyInvestmentResult } from '../models/types';
 
-export function calculateInvestmentResults({
-  initialInvestment,
-  annualInvestment,
-  expectedReturn,
-  duration,
-}: InvestmentParams): YearlyInvestmentResult[] {
+export function calculateInvestmentResults(
+  params: InvestmentParams
+): YearlyInvestmentResult[] {
+  const initialInvestment = params['Initial Investment'];
+  const annualInvestment = params['Annual Investment'];
+  const expectedReturn = params['Expected Return (%)'];
+  const duration = params['Duration (years)'];
+
   const annualData: YearlyInvestmentResult[] = [];
   let investmentValue = initialInvestment;
 

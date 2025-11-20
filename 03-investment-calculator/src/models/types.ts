@@ -1,9 +1,15 @@
-export interface InvestmentParams {
-  initialInvestment: number;
-  annualInvestment: number;
-  expectedReturn: number; // percentage per year
-  duration: number; // in years
+export type InputFields =
+  | 'Initial Investment'
+  | 'Annual Investment'
+  | 'Expected Return (%)'
+  | 'Duration (years)';
+
+export interface SingleInvestmentParam {
+  field: InputFields;
+  value: number;
 }
+
+export type InvestmentParams = Record<InputFields, number>;
 
 export interface YearlyInvestmentResult {
   year: number;
