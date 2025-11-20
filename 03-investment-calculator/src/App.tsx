@@ -14,12 +14,8 @@ function App() {
   const [inputValues, setInputValues] =
     useState<InvestmentParams>(DEFAULT_INPUT_VALUES);
 
-  function changeHandler({ field, value }: SingleInvestmentParam) {
-    setInputValues((prev) => {
-      const updated = { ...prev, [field]: value };
-      console.log('State will become:', updated);
-      return updated;
-    });
+  function changeHandler(data: SingleInvestmentParam) {
+    setInputValues((prev) => ({ ...prev, [data.field]: data.value }));
   }
 
   return (
@@ -28,7 +24,7 @@ function App() {
         <img src='investment-calculator-logo.png' alt='Investment Calculator' />
         <h1>Investment Calculator</h1>
       </header>
-      <UserInput inputValues={inputValues} onUserInputChange={changeHandler}  />
+      <UserInput inputValues={inputValues} onUserInputChange={changeHandler} />
       <Result inputData={inputValues}></Result>
     </>
   );
