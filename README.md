@@ -1,4 +1,5 @@
 # React Projects
+[React - The Complete Guide (incl. Next.js, Redux)](https://www.udemy.com/course/react-the-complete-guide-incl-redux/)
 
 Create typescript project with vite
 ```
